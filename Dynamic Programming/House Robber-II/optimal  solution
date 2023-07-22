@@ -1,0 +1,43 @@
+/*
+PROBLEM:
+A thief needs to rob money in a street. The houses in the street are arranged in a circular manner. 
+Therefore the first and the last house are adjacent to each other.
+The security system in the street is such that if adjacent houses are robbed, the police will get notified.
+
+Given an array of integers “Arr” which represents money at each house, we need to return the maximum amount of money that the thief can rob without
+alerting the police.
+*/
+
+
+
+#include <bits/stdc++.h> 
+long long int maxNonAdjacentSum(vector<int>&nums){
+    int n=nums.size();
+    long long int prev=nums[0];
+    long long int prev2=0;
+    for(int i=1;i<n;i++){
+        long long int take =nums[i];
+        if(i>1)
+        take += prev2;
+        long long int notTake=0+prev;
+        long long int cur=max(take,notTake);
+        prev2=prev;
+        prev=cur;
+    }
+    return prev;
+}
+
+long long int houseRobber(vector<int>& valueInHouse)
+{
+    vector<int>temp1,temp2;
+    long long int n=valueInHouse.size();
+    if(n==1) return valueInHouse[0];
+    for(int i=0;i<n;i++){
+        if(i!=0)temp1.push_back(valueInHouse[i]);
+        if(i!=n-1)temp2.push_back(valueInHouse[i]);
+    }
+    return max(maxNonAdjacentSum(temp1),
+    maxNonAdjacentSum(temp2));
+}
+
+// Solve on Coding Ninja.
