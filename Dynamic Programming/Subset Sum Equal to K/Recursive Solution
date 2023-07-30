@@ -1,0 +1,22 @@
+/*
+PROBLEM:
+We are given an array ‘ARR’ with N positive integers. We need to find if there is a subset in “ARR” with a sum equal to K.
+If there is, return true else return false.
+*/
+
+#include <bits/stdc++.h> 
+int f(int ind,int k,vector<int>&arr){
+    if(k==0) return true;
+    if(ind==0) return (arr[0]==k);
+    bool notTake=f(ind-1,k,arr);
+    bool take=false;
+       if(arr[ind]<=k) take=f(ind-1,k-arr[ind],arr);
+    return take|notTake;
+}
+bool subsetSumToK(int n, int k, vector<int> &arr) {
+    return f(n-1,k,arr);
+}
+
+
+//It gives TLE.
+//Solve on Coding Ninja.
