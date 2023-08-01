@@ -1,0 +1,38 @@
+/*
+PROBLRM:
+  We are given an array ‘ARR’ with N positive integers. We need to partition the array into two subsets such that the absolute difference of the 
+sum of elements of the subsets is minimum.
+We need to return only the minimum absolute difference of the sum of elements of the two partitions
+*/
+
+
+
+int minSubsetSumDifference(vector<int>& arr, int n)
+{
+	int totalSum=0;
+	for(int i=0;i<n;i++)totalSum+=arr[i];
+	int k=totalSum;
+	vector<vector<bool>>dp(n,vector<bool>(k+1,0));
+	for(int i=0;i<n;i++)dp[i][0]=true;
+	if(arr[0]<=k)dp[0][arr[0]]=true;
+	for(int ind=1;ind<n;ind++){
+		for(int target=1;target<=k;target++){
+			bool notTake=dp[ind-1][target];
+			bool take=false;
+			if(arr[ind]<=target)take=dp[ind-1][target-arr[ind]];
+			dp[ind][target]=take|notTake;
+		}
+	}
+	int mini=1e9;
+	for(int s1=0;s1<=totalSum/2;s1++){
+          if (dp[n- 1][s1] == true) {
+                mini=min(mini,abs((totalSum-s1)-s1));
+          }
+        }
+        return mini;
+}
+
+
+
+//It might give TLE.
+//Solve on Coding Ninja.
