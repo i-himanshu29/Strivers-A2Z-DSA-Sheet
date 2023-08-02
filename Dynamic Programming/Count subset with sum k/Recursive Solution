@@ -1,0 +1,27 @@
+/*
+PROBLEM:
+We are given an array ‘ARR’ with N positive integers and an integer K. We need to find the number of subsets whose sum is equal to K.
+*/
+
+int solve(int ind,int sum,vector<int>&num){
+	if(sum==0)return 1;
+	if(ind==0)return (num[0]==sum);
+	
+	int notPick=solve(ind-1,sum,num);
+	int pick=0;
+	if(num[ind]<=sum)
+		pick=solve(ind-1,sum-num[ind],num);
+		return pick+notPick; 	
+}
+int findWays(vector<int>& num, int tar)
+{
+	int n=num.size();
+	return solve(n-1,tar,num);
+}
+
+
+
+//T.C-O(no.of choices).
+//S.C-O(n).
+//It gives TLE.
+//Solve on Coding Ninja.
