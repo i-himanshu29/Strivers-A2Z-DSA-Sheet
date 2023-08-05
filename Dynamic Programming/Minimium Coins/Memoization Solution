@@ -1,0 +1,33 @@
+
+#include <bits/stdc++.h> 
+int solve(int ind,int T,vector<int>&nums,vector<vector<int>>&dp){
+    if(ind==0){
+        if(T%nums[0]==0)return T/nums[0];
+        return 1e9;
+    }
+    if(dp[ind][T]!=-1)return dp[ind][T];
+    int notTake=0+solve(ind-1,T,nums,dp);
+    int take=INT_MAX;
+    if(nums[ind]<=T){
+        take=1+solve(ind,T-nums[ind],nums,dp);
+    }
+    return dp[ind][T]= min(take,notTake);
+}
+int minimumElements(vector<int> &num, int x)
+{
+    // Write your code here.
+     int n=num.size();
+    vector<vector<int>>dp(n,vector<int>(x+1,-1));
+   
+    int ans=solve(n-1,x,num,dp);
+    if(ans>=1e9)return -1;
+    return ans;
+}
+
+/*
+Time Complexity: O(N*T)
+Reason: There are N*T states therefore at max ‘N*T’ new problems will be solved.
+
+Space Complexity: O(N*T) + O(N)
+Reason: We are using a recursion stack space(O(N)) and a 2D array ( O(N*T)).
+*/
