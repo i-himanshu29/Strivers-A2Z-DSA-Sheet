@@ -1,0 +1,29 @@
+/*
+PROBLEM:
+We are given a target sum of ‘X’ and ‘N’ distinct numbers denoting the coin denominations. 
+We need to tell the minimum number of coins required to reach the target sum. We can pick a coin denomination for any number of times we want.
+
+*/
+#include <bits/stdc++.h> 
+int solve(int ind,int T,vector<int>&nums){
+    if(ind==0){
+        if(T%nums[0]==0)return T/nums[0];
+        return 1e9;
+    }
+    int notTake=0+solve(ind-1,T,nums);
+    int take=INT_MAX;
+    if(nums[ind]<=T){
+        take=1+solve(ind,T-nums[ind],nums);
+    }
+    return min(take,notTake);
+}
+int minimumElements(vector<int> &num, int x)
+{
+    int n=num.size();
+    int ans=solve(n-1,x,num);
+    if(ans>=1e9)return -1;
+    return ans;
+}
+
+//It Gives TLE.
+//SOlve on Coding Ninja.
