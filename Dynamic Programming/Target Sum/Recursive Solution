@@ -1,0 +1,41 @@
+/*
+PROBLEM:
+We are given an array ‘ARR’ of size ‘N’ and a number ‘Target’. Our task is to build an expression from the given array where we can place a ‘+’ or ‘-’ sign 
+in front of an integer. We want to place a sign in front of every integer of the array and get our required target. We need to count the number of ways 
+in which we can achieve our required target.
+
+*/
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int countPartitions(int ind, int target, vector<int>& arr){
+     if(ind == 0){
+        if(target==0 && arr[0]==0)
+            return 2;
+        if(target==0 || target == arr[0])
+            return 1;
+        return 0;
+    }
+    int notTaken = countPartitions(ind-1,target,arr);
+    int taken = 0;
+    if(arr[ind]<=target)
+        taken = countPartitions(ind-1,target-arr[ind],arr);  
+    return (notTaken + taken);
+}
+int targetSum(int n,int target, vector<int>& arr){
+    int totSum = 0;
+    for(int i=0; i<arr.size();i++){
+        totSum += arr[i];
+    }
+    //Checking for edge cases
+    if(totSum-target<0) return 0;
+    if((totSum-target)%2==1) return 0;
+    int s2 = (totSum-target)/2;
+    vector<vector<int>> dp(n,vector<int>(s2+1,-1));
+    return countPartitions(n-1,s2,arr);
+}
+
+
+//Solve on Coding Ninja.
