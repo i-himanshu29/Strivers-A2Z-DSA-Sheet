@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+using namespace std;
+long countWaysToMakeChange(int *arr, int n, int value){
+    vector<long> prev(value+1,0) ,cur(value+1,0);
+    //Initializing base condition
+    for(int T=0;T<=value;T++){
+          prev[T]=(T%arr[0]==0);
+          
+        // Else condition is automatically fulfilled,
+        // as prev array is initialized to zero
+    }
+    for(int ind=1; ind<n;ind++){
+        for(int target=0;target<=value;target++){
+            long notTaken = prev[target];
+            long taken = 0;
+            if(arr[ind]<=target)
+                taken = cur[target-arr[ind]]; 
+            cur[target] = notTaken + taken;
+        }
+        prev = cur;
+    }
+    
+    return prev[value];
+}
+
+
+/*
+Time Complexity: O(N*T)
+Reason: There are two nested loops.
+
+Space Complexity: O(T)
+Reason: We are using an external array of size ‘T+1’ to store two rows only.
+*/
