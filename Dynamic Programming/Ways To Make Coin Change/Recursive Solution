@@ -1,0 +1,23 @@
+/*
+PROBLEM:
+We are given an array Arr with N distinct coins and a target. We have an infinite supply of each coin denomination. 
+We need to find the number of ways we sum up the coin values to give us the target.
+Each coin can be used any number of times.
+*/
+
+long solve(int ind,int T,int *a){
+    if(ind==0)return (T%a[0]==0);
+    long notTake=solve(ind-1,T,a);
+    long take=0;
+    if(a[ind]<=T)take=solve(ind,T-a[ind],a);
+    return take + notTake;
+}
+long countWaysToMakeChange(int *denominations, int n, int value)
+{
+    return solve(n-1,value,denominations);
+}
+
+
+
+// It gives TLE.
+//Solve On coding ninja.
