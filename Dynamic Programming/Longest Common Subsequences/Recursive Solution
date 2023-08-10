@@ -1,0 +1,28 @@
+/*
+PROBLEM:
+In the coming articles, we will discuss problems related to ‘Dynamic Programming on Strings’. 
+We will discuss the problem of ‘Longest Common Subsequence’ in this article. Before proceeding further, 
+let us understand what is the “Longest Common Subsequence”, or rather what is a “subsequence”?
+
+A subsequence of a string is a list of characters of the string where some characters are deleted ( or not deleted at all) 
+and they should be in the same order in the subsequence as in the original string.
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+int solve(int i,int j,string &s,string &t){
+	if(i<0||j<0) return 0;
+	if(s[i]==t[j])
+	return 1+solve(i-1,j-1,s,t);
+	return max(solve(i-1,j,s,t),solve(i,j-1,s,t));
+}
+int lcs(string s, string t)
+{
+	int n=s.size();
+	int m=t.size();
+	return solve(n-1,m-1,s,t);
+}
+
+
+//It gives TLE. 
+//Solve on Coding Ninja.
