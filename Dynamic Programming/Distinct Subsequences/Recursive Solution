@@ -1,0 +1,35 @@
+/*
+PROBLEM:
+We are given two strings S1 and S2, we want to know how many distinct subsequences of S2 are present in S1.
+
+*/
+
+int prime = 1e9+7;
+int solve(string s1, string s2, int ind1, int ind2){
+    if(ind2<0)
+        return 1;
+    if(ind1<0)
+        return 0;
+    
+    if(s1[ind1]==s2[ind2]){
+        int leaveOne = solve(s1,s2,ind1-1,ind2-1);
+        int stay = solve(s1,s2,ind1-1,ind2);
+        
+        return (leaveOne + stay)%prime;
+    }
+    
+    else{
+        return  solve(s1,s2,ind1-1,ind2);
+    }
+}
+int distinctSubsequences(string &str, string &sub)
+{
+	 int lt=str.size();
+	  int ls=sub.size();
+    return solve(str,sub,lt-1,ls-1);
+}
+
+
+
+//It gives TLE.
+//Solve on Coding Ninja.
