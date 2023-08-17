@@ -1,0 +1,30 @@
+int distinctSubsequences(string &str, string &sub) {
+    // Write your code here.
+    int prime = 1e9+7;
+	int n=str.size();
+	int m=sub.size();
+
+   vector<int> prev(m+1,0);
+    
+    prev[0]=1;
+    
+    for(int i=1;i<n+1;i++){
+        for(int j=m;j>=1;j--){ // Reverse direction
+            
+            if(str[i-1]==sub[j-1])
+                prev[j] = (prev[j-1] + prev[j])%prime;
+            else
+                prev[j] = prev[j]; //can omit this statemwnt
+        }
+    }
+    return prev[m];
+} 
+
+
+/*
+Time Complexity: O(N*M)
+Reason: There are two nested loops.
+
+Space Complexity: O(M)
+Reason: We are using an external array of size ‘M+1’ to store only one row.
+*/
