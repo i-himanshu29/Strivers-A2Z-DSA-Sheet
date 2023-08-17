@@ -1,0 +1,37 @@
+int prime = 1e9+7;
+int solve(string s1, string s2, int ind1, int ind2,vector<vector<int>>& dp){
+    if(ind2<0)
+        return 1;
+    if(ind1<0)
+        return 0;
+    
+    if(dp[ind1][ind2]!=-1)
+        return dp[ind1][ind2];
+    
+    if(s1[ind1]==s2[ind2]){
+        int leaveOne = solve(s1,s2,ind1-1,ind2-1,dp);
+        int stay = solve(s1,s2,ind1-1,ind2,dp);
+        
+        return dp[ind1][ind2] = (leaveOne + stay)%prime;
+    }
+    
+    else{
+        return dp[ind1][ind2] = solve(s1,s2,ind1-1,ind2,dp);
+    }
+}
+int distinctSubsequences(string &str, string &sub)
+{
+	 int lt=str.size();
+	  int ls=sub.size();
+    vector<vector<int>> dp(lt,vector<int>(ls,-1));
+    return solve(str,sub,lt-1,ls-1,dp);
+}
+
+
+/*
+Time Complexity: O(N*M)
+Reason: There are N*M states therefore at max ‘N*M’ new problems will be solved.
+
+Space Complexity: O(N*M) + O(N+M)
+Reason: We are using a recursion stack space(O(N+M)) and a 2D array ( O(N*M)).
+*/
