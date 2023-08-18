@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+int solve(int i,int j,string &pattern ,string &text, vector<vector<int>>&dp){
+   if(i==0&&j==0)return true;
+   if(i==0 && j>0)return false;
+   if(j==0 && i>0){
+      for(int ii=1;ii<=i;ii++){
+         if(pattern[ii-1]!='*')return false;
+      }
+      return true;
+   }
+   if(dp[i][j]!=-1)return dp[i][j];
+   if(pattern[i-1]==text[j-1]||pattern[i-1]=='?'){
+      return dp[i][j]= solve(i-1,j-1,pattern,text,dp);
+   }
+   if(pattern[i-1]=='*'){
+      return dp[i][j]=solve(i-1,j,pattern,text,dp)||solve(i,j-1,pattern,text,dp);
+       
+   }
+   return dp[i][j]=false;
+}
+bool wildcardMatching(string pattern, string text)
+{
+   // Write your code here.
+   int n=pattern.size();
+   int m=text.size();
+   vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
+   return solve(n,m,pattern,text,dp);
+}
+
+
+
+/*
+
+Time Complexity: O(N*M)
+Reason: There are N*M states therefore at max ‘N*M’ new problems will be solved.
+
+Space Complexity: O(N*M) + O(N+M)
+Reason: We are using a recursion stack space(O(N+M)) and a 2D array ( O(N*M)).
+
+*/
