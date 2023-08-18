@@ -1,0 +1,40 @@
+/*
+PROBLEM:
+We are given two strings ‘S1’ and ‘S2’. String S1 can have the following two special characters:
+
+‘?’ can be matched to a single character of S2.
+‘*’ can be matched to any sequence of characters of S2. (sequence can be of length zero or more).
+We need to check whether strings S1 and S2 match or not.
+*/
+
+int solve(int i,int j,string &pattern ,string &text){
+   if(i==0&&j==0)return true;
+   if(i==0 && j>0)return false;
+   if(j==0 && i>0){
+      for(int ii=1;ii<=i;ii++){
+         if(pattern[ii-1]!='*')return false;
+      }
+      return true;
+   }
+   if(pattern[i-1]==text[j-1]||pattern[i-1]=='?'){
+      return solve(i-1,j-1,pattern,text);
+   }
+   if(pattern[i-1]=='*'){
+      return solve(i-1,j,pattern,text)||solve(i,j-1,pattern,text);
+       
+   }
+   return false;
+}
+bool wildcardMatching(string pattern, string text)
+{
+   // Write your code here.
+   int n=pattern.size();
+   int m=text.size();
+   return solve(n,m,pattern,text);
+}
+
+
+
+//T.C->Exponential.
+//S.C->O(N+M)
+//SOLVE ON CODING NINJA.
