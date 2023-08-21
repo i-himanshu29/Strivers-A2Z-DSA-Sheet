@@ -1,0 +1,42 @@
+/*
+PROBLEM:
+An image is represented by a 2-D array of integers, each integer representing the pixel value of the image. 
+Given a coordinate (sr, sc) representing the starting pixel (row and column) of the flood fill, and a pixel value newColor, “flood fill” the image.
+
+To perform a “flood fill”, consider the starting pixel, plus any pixels connected 4-directionally to the starting pixel of the same colour as
+the starting pixel, plus any pixels connected 4-directionally to those pixels (also with the same colour as the starting pixel), and so on.
+Replace the colour of all of the aforementioned pixels with the newColor.
+*/
+
+
+void dfs(vector<vector<int>> &image,int i,int j,vector<vector<int>>&vis,int oldColor,int newColor,int n,int m){
+    if(i<0 ||j<0||i>=n||j>=m)return ;
+   if(vis[i][j] ||image[i][j]!=oldColor)return ;
+   vis[i][j]=1;
+   image[i][j]=newColor;
+   dfs(image,i,j-1,vis,oldColor,newColor,n,m);
+   dfs(image,i-1,j,vis,oldColor,newColor,n,m);
+    dfs(image,i+1,j,vis,oldColor,newColor,n,m);
+     dfs(image,i,j+1,vis,oldColor,newColor,n,m);
+}
+vector<vector<int>> floodFill(vector<vector<int>> &image, int n, int m, int x, int y, int p) {
+    // Write your code here.
+    vector<vector<int>>vis(n,vector<int>(m,0));
+    int oldColor=image[x][y];
+    dfs(image,x,y,vis,oldColor,p,n,m);
+    return image;
+}
+
+
+
+//SOLVE ON CODING NINJA.
+/*
+Time Complexity: O(NxM + NxMx4) ~ O(N x M)
+
+For the worst case, all of the pixels will have the same colour, so DFS function will be called for (N x M) nodes and for every node we are traversing for 4 neighbours, so it will take O(N x M x 4) time.
+
+Space Complexity: O(N x M) + O(N x M)
+
+O(N x M) for copied input array and recursive stack space takes up N x M locations at max. 
+
+*/
