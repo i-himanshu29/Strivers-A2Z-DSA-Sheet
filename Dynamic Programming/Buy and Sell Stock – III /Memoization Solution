@@ -1,0 +1,32 @@
+int MemomaxProf(int ind,int buy,int cap,vector<int>&val,int n,vector<vector<vector<int>>>&dp){
+    if(cap==0 || ind == n)return 0;
+    if(dp[ind][buy][cap]!= -1) return dp[ind][buy][cap];
+    int profit = 0;
+    if(buy){
+        int take = -val[ind]+ MemomaxProf(ind+1,0,cap,val,n,dp);
+        int not_take= 0+MemomaxProf(ind+1,1,cap,val,n,dp);
+        profit= max(take,not_take);
+    }else{
+        int take = val[ind]+ MemomaxProf(ind+1,1,cap-1,val,n,dp);
+        int not_take= 0+MemomaxProf(ind+1,0,cap,val,n,dp);
+        profit= max(take,not_take);
+    }
+    return dp[ind][buy][cap] = profit;
+}
+int maxProfit(vector<int>& prices)
+{
+    int n=prices.size();
+    vector<vector<vector<int>>> dp (n,vector<vector<int>>(2,vector<int>(3,-1)));
+     return MemomaxProf(0,1,2,prices,n,dp);
+}
+
+//SOLVE ON CODING NINJA
+//GIVES TLE
+
+/*
+Time Complexity: O(N*2*3) 
+Reason: There are N*2*3 states therefore at max ‘N*2*3’ new problems will be solved.
+
+Space Complexity: O(N*2*3) + O(N)
+Reason: We are using a recursion stack space(O(N)) and a 3D array ( O(N*2*3)).
+*/
