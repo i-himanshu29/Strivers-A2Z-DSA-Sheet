@@ -1,0 +1,39 @@
+/*
+PROBLEM:
+We are given an array Arr[] of length n. It represents the price of a stock on ‘n’ days. The following guidelines need to be followed:
+
+We can buy and sell the stock any number of times.
+In order to sell the stock, we need to first buy it on the same or any previous day.
+We can’t buy a stock again after buying it once. In other words, we first buy a stock and then sell it. 
+After selling we can buy and sell again. But we can’t sell before buying and can’t buy before selling any previously bought stock.
+We can do at-most K transactions.
+
+*/
+
+#include <bits/stdc++.h> 
+
+int getAns(vector<int>& Arr, int n, int ind, int buy, int cap ){
+
+    if(ind==n || cap==0) return 0; //base case
+    
+    int profit;
+    if(buy==0){// We can buy the stock
+        profit = max(0+getAns(Arr,n,ind+1,0,cap), 
+                    -Arr[ind] + getAns(Arr,n,ind+1,1,cap));
+
+    }
+    if(buy==1){// We can sell the stock
+        profit = max(0+getAns(Arr,n,ind+1,1,cap),
+                    Arr[ind] + getAns(Arr,n,ind+1,0,cap-1));
+
+    }
+    return  profit;
+}
+int maximumProfit(vector<int>& prices, int n, int k)
+{
+    return getAns(prices,n,0,0,k);
+}
+
+
+//IT GIVES TLE.
+//SOLVE ON CODING NINJA
