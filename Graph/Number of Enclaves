@@ -1,0 +1,81 @@
+/*
+PROBLEM:
+You are given an N x M binary matrix grid, where 0 represents a sea cell and 1 represents a land cell. 
+A move consists of walking from one land cell to another adjacent (4-directionally) land cell or walking off the boundary of the grid. 
+Find the number of land cells in the grid for which we cannot walk off the boundary of the grid in any number of moves.
+*/
+
+int matrixTraps(int N,int M,vector<vector<int>> &Matrix)
+{
+    // Write your code here.
+    queue<pair<int,int>> q;
+    vector<vector<int>> vis(N,vector<int>(M,0));
+    for(int i=0;i<M;i++)
+    {
+        if(!vis[0][i] && Matrix[0][i] == 0)
+        {
+            vis[0][i] = 1; 
+            q.push({0,i});
+        }
+        if(!vis[N-1][i] && Matrix[N-1][i] == 0)
+        {
+            vis[N-1][i] = 1;
+            q.push({N-1,i});
+        }
+    }
+    for(int i=1;i<N-1;i++)
+    {
+        if(!vis[i][0] &&Matrix[i][0] == 0)
+        {
+            vis[i][0] = 1;
+            q.push({i,0});
+        }
+        if(!vis[i][M-1] && Matrix[i][M-1] == 0)
+        {
+            vis[i][M-1] = 1;
+            q.push({i,M-1});
+        }
+    }
+    int delrow[] = {-1,0,1,0};
+    int delcol[] = {0,1,0,-1};
+    while(!q.empty())
+    {
+        int row = q.front().first;
+        int col = q.front().second;
+        q.pop();
+        for(int i=0;i<4;i++)
+        {
+          int nrow = row + delrow[i];
+          int ncol = col + delcol[i];
+          if(nrow>=0 && nrow<N && ncol>=0 && ncol<M && !vis[nrow][ncol] && Matrix[nrow][ncol] == 0)
+          {
+            vis[nrow][ncol] = 1;
+            q.push({nrow,ncol});
+          }
+        }
+    } 
+    int cnt = 0; 
+    for(int i =0; i<N; i++)
+    {
+        for(int j=0;j<M; j++)
+        {
+          if(vis[i][j] == 0 && Matrix[i][j] == 0) {
+            cnt++;
+          }
+        }
+    }
+    return cnt;
+}
+
+
+
+/*
+Time Complexity: O(NxMx4) ~ O(N x M), For the worst case, assuming all the pieces as land,
+the BFS function will be called for (N x M) nodes and for every node, 
+we are traversing for 4 neighbors, so it will take O(N x M x 4) time. 
+
+Space Complexity ~ O(N x M), O(N x M) for the visited array, and queue space takes up N x M locations at max. 
+*/
+
+//SOLVE ON CODING NINJA
+
