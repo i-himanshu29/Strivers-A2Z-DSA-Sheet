@@ -1,0 +1,63 @@
+/*
+PROBLEM:
+A divisible subset is the one in which if we pick two elements i and j from the subset, then either arr[i]%arr[j] == 0 or arr[j] % arr[i] == 0. 
+For example, [16,8,4] is a divisible subset.
+Given an array with distinct elements, we need to print its longest divisible subset. We can print any answer.
+*/
+
+
+
+#include <bits/stdc++.h> 
+
+vector<int>divisibleSet(vector<int>& arr) 
+{
+    int n=arr.size();
+    vector<int>dp(n,1);
+    vector<int>hash(n);
+    sort(arr.begin(),arr.end());
+    int maxi=1;
+    int lastIndex=0;
+    for(int i=1; i<n; i++)
+    {
+        hash[i]=i;
+        for(int j=0; j<i; j++)
+        {
+            if(arr[i]%arr[j]==0 and dp[i]<1+dp[j])
+            {
+                dp[i]=1+dp[j];
+                hash[i]=j;
+            }
+        }
+        if(maxi<dp[i])
+        {
+            maxi=dp[i];
+            lastIndex=i;
+        }
+    }
+    //int ind=0;
+    vector<int>temp;
+    //int lis[maxi];
+    temp.push_back(arr[lastIndex]);
+    while(hash[lastIndex]!=lastIndex)
+    {
+        lastIndex=hash[lastIndex];
+        //lis[ind++]=arr[lastIndex];
+        temp.push_back(arr[lastIndex]);
+
+    }
+    reverse(temp.begin(),temp.end());
+    return temp;
+        
+}
+
+
+
+/*
+Time Complexity: O(N*N)
+Reason: There are two nested loops.
+
+Space Complexity: O(N)
+Reason: We are only using two rows of size n.
+*/
+
+//SOLVE ON CODING NINJA
