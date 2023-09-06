@@ -1,0 +1,68 @@
+/*
+PROBLEM STATEMENT:
+There are a total of N tasks, labeled from 0 to N-1. Some tasks may have prerequisites, for example, to do task 0 you have to first complete task 1, 
+which is expressed as a pair: [0, 1]
+Given the total number of tasks N and a list of prerequisite pairs P, find if it is possible to finish all tasks.
+
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> findSchedule(int numCourses, vector<pair<int, int>> &prerequisites)
+{
+    // Write your code here.
+    vector<int>adj[numCourses+1];
+    for(auto it:prerequisites){
+        adj[it.first].push_back(it.second);
+    }
+    //kahn algo
+
+    // int degree[numCourses]={0};
+     queue<int>q;
+
+    vector<int>indegree(numCourses+1,0);
+    for(int i=0;i<numCourses;i++){
+        for(auto it:adj[i]){
+            indegree[it];
+
+        }
+    }
+   
+    for(int i=0;i<numCourses;i++){
+        if(indegree[i]==0){
+            q.push(i);
+        }
+    }
+
+    vector<int>topo;
+    while(!q.empty()){
+        int node=q.front();
+        topo.push_back(node);
+        q.pop();
+        
+
+        //remove from degree
+
+        for(auto it:adj[node]){
+            indegree[it]--;
+            if(indegree[it]==0)q.push(it);
+        }
+    }
+    if(topo.size()==numCourses)return {};
+   return topo;
+}
+
+
+/*
+Time Complexity: 
+O(V+E), where V = no. of nodes and E = no. of edges. This is a simple BFS algorithm.
+
+Space Complexity:
+O(N) + O(N) ~ O(2N), O(N) for the indegree array, and O(N) for the queue data structure used in BFS(where N = no.of nodes). 
+Extra O(N) for storing the topological sorting. Total ~ O(3N).
+
+*/
+
+
+//SOLVE ON CODING NINJA
