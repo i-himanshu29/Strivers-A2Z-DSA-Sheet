@@ -1,0 +1,58 @@
+/*
+Problem Statement:
+A directed graph of V vertices and E edges is given in the form of an adjacency list adj.
+Each node of the graph is labeled with a distinct integer in the range 0 to V – 1. A node is a terminal node if there are no outgoing edges.
+A node is a safe node if every possible path starting from that node leads to a terminal node. 
+You have to return an array containing all the safe nodes of the graph. The answer should be sorted in ascending order.
+*/
+
+#include <bits/stdc++.h> 
+vector<int> safeNodes(vector<vector<int>> &edges, int n, int e) {
+    
+    vector<vector<int>> revAdj(n);
+    vector<int> indegree(n,0);
+    for(int i=0;i<e;i++){
+        int u = edges[i][0];
+        int v = edges[i][1];
+        // the edge u->v in revAdj v->u
+        revAdj[v].push_back(u);
+        indegree[u]++;
+    }
+
+    queue<int> q;
+    for(int i=0;i<n;i++){
+        if(indegree[i] == 0){
+            q.push(i);
+        }
+    }
+
+    vector<int> ans;
+    while(!q.empty()){
+        int f = q.front();
+        q.pop();
+        ans.push_back(f);
+
+        for(int i: revAdj[f]){
+            indegree[i]--;
+            if(indegree[i] == 0){
+                q.push(i);
+            }
+        }
+    }
+
+    sort(ans.begin(),ans.end());
+    return ans;
+}
+
+
+/*
+Time Complexity: 
+O(V+E)+O(N*logN), where V = no. of nodes and E = no. of edges. This is a simple BFS algorithm. Extra O(N*logN) for sorting the safeNodes array,
+where N is the number of safe nodes.
+
+Space Complexity:
+O(N) + O(N) + O(N) ~ O(3N), O(N) for the indegree array, O(N) for the queue data structure used in BFS(where N = no.of nodes), 
+and extra O(N) for the adjacency list to store the graph in a reversed order.
+*/
+
+//SOLVE ON CODING NINJA
