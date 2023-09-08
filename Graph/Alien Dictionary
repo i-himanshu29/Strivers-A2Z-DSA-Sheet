@@ -1,0 +1,65 @@
+/*
+Problem Statement: 
+Given a sorted dictionary of an alien language having N words and k starting alphabets of a standard dictionary.
+Find the order of characters in the alien language.
+
+Note: Many orders may be possible for a particular test case, thus you may return any valid order.
+*/
+
+#include <bits/stdc++.h>
+void dfs(int node, vector<bool> &visited, stack<int> &st, vector<int> adj[]) {
+  visited[node] = true;
+  for (int nbr : adj[node]) {
+    if (!visited[nbr]) {
+      dfs(nbr, visited, st, adj);
+    }
+  }
+  st.push(node);
+}
+string getAlienLanguage(vector<string> &dictionary, int k) {
+  // Construct adjacency list
+  vector<int> adj[k];
+  for (int i = 0; i < dictionary.size() - 1; i++) {
+    string s1 = dictionary[i];
+    string s2 = dictionary[i + 1];
+    int len = min(s1.size(), s2.size());
+    for (int ptr = 0; ptr < len; ptr++) {
+      if (s1[ptr] != s2[ptr]) {
+        adj[s1[ptr] - 'a'].push_back(s2[ptr] - 'a');
+        break;
+      }
+    }
+  }
+ 
+
+  // Perform topological sort using DFS
+  stack<int> st;
+  vector<bool> visited(k, false);
+  for (int i = 0; i < k; i++) {
+    if (!visited[i]) {
+      dfs(i, visited, st, adj);
+    }
+  }
+  // Extract characters from the stack to form the result
+  string ans = "";
+  while (!st.empty()) {
+    ans += char(st.top() + 'a');
+    st.pop();
+  }
+  return ans;
+}
+
+
+
+/*
+Time Complexity:
+O(N*len)+O(K+E),
+where N is the number of words in the dictionary, ‘len’ is the length up to the index where the first inequality occurs, 
+K = no. of nodes, and E = no. of edges.
+
+Space Complexity: 
+O(K) + O(K)+O(K)+O(K) ~ O(4K),
+O(K) for the indegree array, and O(K) for the queue data structure used in BFS(where K = no.of nodes),
+O(K) for the answer array and O(K) for the adjacency list used in the algorithm.
+*/
+//SOLVE ON CODING NINJA
