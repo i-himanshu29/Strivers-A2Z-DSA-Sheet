@@ -1,0 +1,31 @@
+/*
+Problem Statement: Given a weighted, directed and connected graph of V vertices and E edges,
+Find the shortest distance of all the vertices from the source vertex S.
+
+Note: If the Graph contains a negative cycle then return an array consisting of only -1.
+*/
+vector<int> bellmonFord(int n, int m, int src, vector<vector<int>> &edges) {
+    // Write your code here.
+    vector<int>dist(n+1,1e8);
+    dist[src]=0;
+    
+    for(int i=0;i<n-1;i++){
+    for(auto i:edges)
+    {
+       int u=i[0],v=i[1],w=i[2];
+       if(dist[u]+w<dist[v])
+       {
+           dist[v]=dist[u]+w;
+       }
+    }
+    }
+    
+  return dist;
+}
+
+//SOLVE ON CODING NINJA
+/*
+Time Complexity: O(V*E), where V = no. of vertices and E = no. of Edges.
+
+Space Complexity: O(V) for the distance array which stores the minimized distances.
+*/
